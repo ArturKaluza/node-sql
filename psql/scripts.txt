@@ -1,0 +1,8 @@
+// tworzenie testdb jako u¿ytkownik postgres
+createdb -U postgres testdb
+
+// dostêp do bazy testdb jak uzytkownik postgres
+psql -U postgres testdb
+
+// list u¿ytkownków
+monsterdb=# SELECT * FROM pg_user;

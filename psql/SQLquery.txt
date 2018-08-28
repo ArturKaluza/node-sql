@@ -1,0 +1,337 @@
+INSERT DATA
+
+CREATE TABLE student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(20),
+    major VARCHAR(20)
+);
+
+
+
+DESCRIBE student;
+
+
+
+
+DROP TABLE student;
+
+ 
+
+ALTER TABLE student ADD gpa DECIMAL(3,2);
+
+
+
+ALTER TABLE student DROP COLUMN gpa;
+
+
+
+SELECT * FROM student;
+
+INSERT INTO student VALUES(1, 'Jack', 'Biology');
+
+
+INSERT INTO student VALUES(2, 'Kate', 'Sociology');
+
+
+INSERT INTO student(student_id, name) VALUES(3, 'Claire');
+
+
+INSERT INTO student VALUES(5, 'Mike', 'Computer Sience');
+
+
+
+
+CREATE TABLE student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    major VARCHAR(20) UNIQUE
+);
+
+
+
+
+CREATE TABLE student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(20) DEFAULT 'undecided',
+    major VARCHAR(20) 
+);
+
+
+
+
+CREATE TABLE student (
+    student_id INT AUTO_INCREMENT,
+    name VARCHAR(20) DEFAULT 'undecided',
+    major VARCHAR(20),
+    PRIMARY KEY(student_id)
+);
+
+
+
+INSERT INTO student(name, major) VALUES('Mike', 'Computer Sience');
+
+INSERT INTO student(name, major) VALUES('Kate', 'Sociology');
+
+
+UPDATE AND DELETE
+
+SELECT * FROM student;
+
+UPDATE student
+SET major = 'Soc'
+WHERE major = 'Sociology';
+
+
+
+UPDATE student
+SET major = 'Copm Sci'
+WHERE major = 'Computer Sience';
+
+
+
+UPDATE student
+SET major = 'Social'
+WHERE student_id = 1;
+
+
+
+UPDATE student
+SET major = 'Biochemistry'
+WHERE major = 'Bio' OR major = 'Chemistry';
+
+
+
+UPDATE student
+SET name = 'Tom', major = 'undecided'
+WHERE student_id = 1;
+
+
+
+DELETE FROM student
+WHERE name = 'Tom' AND major = 'undecide';
+
+
+
+
+QUERIES
+
+SELECT name, major
+FROM student
+ORDER BY name;
+
+SELECT name, major
+FROM student
+ORDER BY name DESC;
+
+
+
+
+
+SELECT name, major
+FROM student
+ORDER BY major, student_id;
+
+
+
+
+SELECT * 
+FROM student
+LIMIT 2;
+
+
+SELECT * FROM student 
+WHERE major = 'Biology';
+
+
+
+
+SELECT name, major FROM student
+WHERE major = 'Biology' OR major = 'Chemistry';
+
+
+SELECT * FROM student
+WHERE name IN ('Clair', 'Mike');
+
+
+
+BASIC QUERY
+
+SHOW TABLES;
+
+SELECT * FROM employee;
+
+
+
+SELECT * FROM client;
+
+SELECT * FROM employee
+ ORDER BY salary DESC;
+
+
+
+SELECT * FROM employee
+ORDER BY sex, first_name, last_name;
+
+
+SELECT * FROM employee
+LIMIT 5;
+
+
+
+SELECT first_name, last_name 
+FROM employee;
+
+
+
+SELECT first_name AS forname, last_name AS surname 
+FROM employee;
+
+
+SELECT DISTINCT sex 
+FROM employee;
+
+
+SELECT DISTINCT branch_id
+ FROM employee;
+
+FUNCTIONS
+
+SELECT COUNT(emp_id)
+FROM employee;
+
+SELECT COUNT(super_id)
+FROM employee;
+
+
+
+-- COUNT() ca³kowita liczba
+
+SELECT COUNT(emp_id)
+FROM employee
+WHERE sex = 'F' AND birth_day > '1971-01-01';
+
+
+
+-- AVG()  œrednia
+
+SELECT AVG(salary)
+FROM employee;
+
+
+
+SELECT AVG(salary)
+FROM employee
+WHERE sex= 'M';
+
+
+
+-- SUM() suma
+
+SELECT SUM(salary)
+from employee;
+
+
+
+
+-- agregation 
+
+SELECT COUNT(sex), sex
+FROM employee
+GROUP BY sex;
+
+
+SELECT SUM(total_sales), emp_id
+FROM works_with
+GROUP BY emp_id;
+
+
+SELECT SUM(total_sales), client_id
+FROM works_with
+GROUP BY client_id;
+
+
+WILDCART
+
+-- % any numbers or charakters
+
+SELECT * FROM client
+WHERE client_name LIKE '%LLC';
+
+
+
+SELECT * FROM branch_supplier
+WHERE supplier_name LIKE '%Label%';
+
+
+
+-- _ represent one character
+
+SELECT * FROM employee
+WHERE birth_day LIKE '____-10%';
+
+
+SELECT * FROM client
+WHERE client_name LIKE '%School';
+
+
+
+UNION
+
+
+SELECT first_name 
+FROM employee 
+UNION 
+SELECT branch_name
+ FROM branch;
+
+
+
+
+SELECT client_name 
+FROM client
+ UNION
+ SELECT supplier_name 
+FROM branch_supplier;
+
+
+JOINS
+-- combine two or more rows on related column
+
+SELECT employee.emp_id, employee.first_name, branch.branch_name
+ FROM employee 
+JOIN branch 
+ON employee.emp_id = branch.mgr_id;
+
+
+NESTED QUERIES
+
+
+SELECT employee.first_name, employee.last_name
+
+FROM employee
+WHERE employee.emp_id IN (
+    
+	SELECT emp_id
+    
+	FROM works_with
+    	
+	WHERE works_with.total_sales > 30000
+
+);
+
+
+SELECT client.client_name
+
+FROM client
+WHERE client.branch_id = (
+
+	SELECT branch.branch_id
+    
+	FROM branch
+    
+	WHERE branch.mgr_id = 102
+
+);
+
+
+ON DELETE
